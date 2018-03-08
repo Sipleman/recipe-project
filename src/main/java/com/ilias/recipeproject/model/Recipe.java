@@ -1,6 +1,7 @@
 package com.ilias.recipeproject.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,13 @@ public class Recipe {
     private Integer serving;
     private String source;
     private String url;
+    @Lob
     private String directions;
+
+    public Recipe() {
+        this.ingredients = new ArrayList<>();
+        this.categories = new ArrayList<>();
+    }
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
@@ -128,6 +135,7 @@ public class Recipe {
     }
 
     public void setNotes(Notes notes) {
+        notes.setRecipe(this);
         this.notes = notes;
     }
 
@@ -137,5 +145,11 @@ public class Recipe {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public Recipe addIngredient(Ingredient ingredient){
+        ingredient.setRecipe(this);
+        ingredients.add(ingredient);
+        return this;
     }
 }
